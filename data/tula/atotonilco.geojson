@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "atotonilco",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "1", "Name": null, "descriptio": null, "timestamp": null, "begin": null, "end": null, "altitudeMo": null, "tessellate": -1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null, "A_PTAR_ATO": "Acciones PTAR Atotonilco" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ -99.294917533589796, 19.958993772549896 ] ] } }
+]
+}

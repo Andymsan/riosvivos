@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ríos Vivos — Promesa 92</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --atoyac: #1a4971;
+      --lerma:  #1e6b3a;
+      --tula:   #611232;
+      --ink:    #1a1a1a;
+      --off:    #f5f3f0;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px;
+      transition: background .4s, padding .3s;
+    }
+    nav.scrolled { background: rgba(8,8,8,.92); backdrop-filter: blur(8px); padding: 12px 32px; }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 900; color: #fff;
+      text-decoration: none; letter-spacing: -.01em;
+    }
+    .nav-logo em { font-style: italic; color: rgba(255,255,255,.6); font-weight: 700; }
+    .nav-tag {
+      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,.45); font-weight: 400;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative; height: 100vh; min-height: 580px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('img/tres_rios.jpg') center/cover no-repeat;
+      filter: brightness(.22) saturate(.6);
+      transform: scale(1.03);
+      animation: hzoom 12s ease forwards;
+    }
+    @keyframes hzoom { from { transform:scale(1.03); } to { transform:scale(1); } }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,.3) 0%, rgba(0,0,0,.7) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; }
+    .hero-tag {
+      font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-bottom: 20px;
+      opacity: 0; animation: fadeUp .7s .3s forwards;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(56px, 10vw, 120px); font-weight: 900; line-height: .95;
+      letter-spacing: -.02em; color: #fff;
+      opacity: 0; animation: fadeUp .9s .5s forwards;
+    }
+    .hero-title em { font-style: italic; color: rgba(255,255,255,.65); }
+    .hero-sub {
+      margin-top: 28px; max-width: 540px; margin-left: auto; margin-right: auto;
+      font-size: clamp(15px, 1.8vw, 18px); color: rgba(255,255,255,.62);
+      font-weight: 300; line-height: 1.65;
+      opacity: 0; animation: fadeUp .8s .75s forwards;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp .6s 1.2s forwards;
+    }
+    .hero-scroll span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+    .scroll-arr { width: 18px; height: 18px; border-right: 1.5px solid rgba(255,255,255,.3); border-bottom: 1.5px solid rgba(255,255,255,.3); transform: rotate(45deg); animation: bounce 1.6s infinite; }
+    @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    /* INTRO STRIP */
+    .intro-strip {
+      background: #111; border-top: 1px solid rgba(255,255,255,.06);
+      padding: 48px 32px; text-align: center;
+    }
+    .intro-strip p {
+      max-width: 700px; margin: 0 auto;
+      font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.55); font-weight: 300;
+    }
+    .intro-strip strong { color: rgba(255,255,255,.85); font-weight: 600; }
+
+    /* RÍOS SECTION */
+    .s-rios { padding: 80px 32px 100px; }
+    .s-rios-header {
+      text-align: center; margin-bottom: 56px;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity .7s, transform .7s;
+    }
+    .s-rios-header.visible { opacity: 1; transform: none; }
+    .s-tag { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); display: block; margin-bottom: 12px; }
+    .s-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3vw, 38px); font-weight: 700; color: #fff; }
+
+    .rios-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    /* RÍO CARD */
+    .rio-card {
+      position: relative; border-radius: 14px; overflow: hidden;
+      background: #141414; border: 1px solid rgba(255,255,255,.07);
+      display: flex; flex-direction: column;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s, transform .7s, box-shadow .25s, border-color .25s;
+      text-decoration: none; color: #fff;
+    }
+    .rio-card.visible { opacity: 1; transform: none; }
+    .rio-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.5); border-color: rgba(255,255,255,.15); }
+    .rio-card:hover .rc-stripe { height: 6px; }
+
+    .rc-stripe { height: 4px; transition: height .2s; flex-shrink: 0; }
+    .rc-atoyac { background: linear-gradient(90deg, var(--atoyac), #2a7abf); }
+    .rc-lerma  { background: linear-gradient(90deg, var(--lerma),  #2aa85a); }
+    .rc-tula   { background: linear-gradient(90deg, var(--tula),   #9b2247); }
+
+    .rc-body { padding: 32px 28px 28px; flex: 1; display: flex; flex-direction: column; }
+    .rc-num  { font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 10px; }
+    .rc-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 900; line-height: 1.1; margin-bottom: 6px;
+    }
+    .rc-name.cn-atoyac { color: #5aa0d8; }
+    .rc-name.cn-lerma  { color: #5ac87a; }
+    .rc-name.cn-tula   { color: #d87a9a; }
+    .rc-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-bottom: 20px; }
+    .rc-desc { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,.58); flex: 1; margin-bottom: 24px; }
+    .rc-stats { display: flex; gap: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.06); }
+    .rc-stat-v { font-size: 22px; font-weight: 700; line-height: 1; }
+    .rc-stat-v.sv-atoyac { color: #5aa0d8; }
+    .rc-stat-v.sv-lerma  { color: #5ac87a; }
+    .rc-stat-v.sv-tula   { color: #d87a9a; }
+    .rc-stat-l { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 3px; }
+    .rc-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5);
+      margin-top: 20px; transition: color .2s;
+    }
+    .rio-card:hover .rc-cta { color: rgba(255,255,255,.9); }
+
+    /* FOOTER */
+    footer {
+      background: #050505; border-top: 1px solid rgba(255,255,255,.05);
+      text-align: center; padding: 28px;
+      font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: .04em;
+    }
+    footer a { color: rgba(255,255,255,.35); text-decoration: none; }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 14px 18px; }
+      .rios-grid { grid-template-columns: 1fr; }
+      .s-rios { padding: 60px 20px 80px; }
+      .intro-strip { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">Ríos <em>Vivos</em></a>
+  <span class="nav-tag">Promesa 92 · SEMARNAT 2025–2026</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Promesa 92 de la presidenta · Plan de acción 2025–2026</p>
+    <h1 class="hero-title">Ríos <em>Vivos</em></h1>
+    <p class="hero-sub">Tres ríos estratégicos de México en proceso de saneamiento, restauración ecológica y recuperación hídrica para las comunidades que dependen de ellos.</p>
+  </div>
+  <div class="hero-scroll">
+    <span>Explorar</span>
+    <div class="scroll-arr"></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<div class="intro-strip">
+  <p>La Secretaría de Medio Ambiente y Recursos Naturales impulsa la recuperación de tres de los ríos más afectados del país: el <strong>Atoyac</strong>, el <strong>Lerma-Santiago</strong> y el <strong>Tula</strong>. En conjunto suman más de <strong>90 proyectos</strong> de infraestructura, monitoreo y restauración activos en <strong>2025 y 2026</strong>.</p>
+</div>
+
+<!-- TRES RÍOS -->
+<section class="s-rios" id="rios">
+  <div class="s-rios-header reveal">
+    <span class="s-tag">Selecciona un río</span>
+    <h2 class="s-title">Tres cuencas, una apuesta</h2>
+  </div>
+
+  <div class="rios-grid">
+
+    <!-- ATOYAC -->
+    <a class="rio-card reveal" href="atoyac.html" style="transition-delay:.05s">
+      <div class="rc-stripe rc-atoyac"></div>
+      <div class="rc-body">
+        <div class="rc-num">01 · Cuenca alta del Atoyac</div>
+        <div class="rc-name cn-atoyac">Atoyac</div>
+        <div class="rc-sub">Puebla · Tlaxcala</div>
+        <p class="rc-desc">Saneamiento de las descargas domésticas e industriales en la cuenca alta, revegetación de riberas y conservación de más de 15,000 ha de bosque.</p>
+        <div class="rc-stats">
+          <div><div class="rc-stat-v sv-atoyac">28</div><div class="rc-stat-l">proyectos</div></div>
+          <div><div class="rc-stat-v sv-atoyac">18</div><div class="rc-stat-l">municipios</div></div>
+          <div><div class="rc-stat-v sv-atoyac">5</div><div class="rc-stat-l">metas</div></div>
+        </div>
+        <span class="rc-cta">Explorar el plan ›</span>
+      </div>
+    </a>
+
+    <!-- LERMA-SANTIAGO -->
+    <a class="rio-card reveal" href="lerma.html" style="transition-delay:.15s">
+      <div class="rc-stripe rc-lerma"></div>
+      <div class="rc-body">
+        <div class="rc-num">02 · Cuenca Lerma-Santiago</div>
+        <div class="rc-name cn-lerma">Lerma-Santiago</div>
+        <div class="rc-sub">Estado de México · Jalisco · Querétaro</div>
+        <p class="rc-desc">Mejora de la calidad del agua, restauración de las ciénegas de Lerma, recuperación del humedal El Ahogado y reforestación de la cuenca alta.</p>
+        <div class="rc-stats">
+          <div><div class="rc-stat-v sv-lerma">40</div><div class="rc-stat-l">proyectos</div></div>
+          <div><div class="rc-stat-v sv-lerma">37</div><div class="rc-stat-l">municipios</div></div>
+          <div><div class="rc-stat-v sv-lerma">6</div><div class="rc-stat-l">metas</div></div>
+        </div>
+        <span class="rc-cta">Explorar el plan ›</span>
+      </div>
+    </a>
+
+    <!-- TULA -->
+    <a class="rio-card reveal" href="tula.html" style="transition-delay:.25s">
+      <div class="rc-stripe rc-tula"></div>
+      <div class="rc-body">
+        <div class="rc-num">03 · Cuenca del Río Tula</div>
+        <div class="rc-name cn-tula">Tula</div>
+        <div class="rc-sub">Hidalgo · Estado de México</div>
+        <p class="rc-desc">Plan integral de saneamiento, prevención de inundaciones y restauración ecológica en los 30 km del tramo urbano del río Tula y sus afluentes.</p>
+        <div class="rc-stats">
+          <div><div class="rc-stat-v sv-tula">23</div><div class="rc-stat-l">proyectos</div></div>
+          <div><div class="rc-stat-v sv-tula">11</div><div class="rc-stat-l">metas</div></div>
+          <div><div class="rc-stat-v sv-tula">3</div><div class="rc-stat-l">ejes</div></div>
+        </div>
+        <span class="rc-cta">Explorar el plan ›</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  Secretaría de Medio Ambiente y Recursos Naturales · Ríos Vivos — Promesa 92 · 2025–2026
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50));
+
+  const obs = new IntersectionObserver(entries =>
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

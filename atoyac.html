@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Río Atoyac — Plan de Saneamiento 2025–2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body.rio-atoyac {
+      --agua: #1a4971; --agua-lt: #e4edf5;
+      --inund: #1a6b7a; --inund-lt: #e4f0f3;
+      --eco: #2d6b3a; --eco-lt: #e4f0e8;
+      --vino: #1a4971; --vino-dk: #0f2f4d; --vino-lt: #e4edf5;
+    }
+    body.rio-atoyac #app-header { background: #0f2f4d; }
+    .back-to-rv {
+      font-size: 11px; color: rgba(255,255,255,.55);
+      text-decoration: none; letter-spacing: .04em;
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-bottom: 4px;
+    }
+    .back-to-rv:hover { color: rgba(255,255,255,.9); }
+  </style>
+</head>
+<body class="rio-atoyac">
+<div id="app">
+  <div id="app-header">
+    <div>
+      <a href="index.html" class="back-to-rv">‹ Ríos Vivos</a>
+      <div id="panel-title" onclick="UI.goHome()" style="cursor:pointer">Río Atoyac</div>
+    </div>
+    <div id="panel-sub">Plan de acción 2025–2026 · Puebla · Tlaxcala</div>
+  </div>
+  <div id="app-body">
+    <aside id="panel">
+      <div id="eje-tabs">
+        <button class="etab" id="tab-agua"  onclick="UI.selEje('agua')">Calidad<br>del agua</button>
+        <button class="etab" id="tab-inund" onclick="UI.selEje('inund')">Espacios<br>ribereños</button>
+        <button class="etab" id="tab-eco"   onclick="UI.selEje('eco')">Restauración<br>ecológica</button>
+      </div>
+      <div id="full-line"></div>
+      <div id="plist"></div>
+    </aside>
+    <div id="map-wrap">
+      <div id="map"></div>
+      <div id="map-badge" class="hidden"><span id="map-badge-txt"></span></div>
+      <div id="dbo-legend" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ESTCLS = {'En ejecución':'b-ej','En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeación':'b-pl'};
+const RIO_DATA_DIR   = 'data/atoyac/';
+const RIO_CUENCA_KEY = 'cuenca_atoyac';
+const RIO_COLOR      = '#1a4971';
+const RIO_INIT_VIEW  = { lat: 19.35, lng: -98.2, zoom: 9 };
+
+const CONFIG = {
+  agua:{
+    label:'Calidad del agua', tabClass:'ta', color:'#1a4971', accent:'#1a6fa8',
+    desc:'Saneamiento de las descargas domésticas e industriales de la cuenca alta del Atoyac en Puebla y Tlaxcala, con 7 PTARs rehabilitadas, 5 nuevas y 105 km de colectores.',
+    metas:[
+      { meta:'Sanear las descargas de la cuenca alta de Puebla y Tlaxcala',
+        color:'#3a7aad',
+        desc:'Reingeniería de 7 PTARs, construcción de 5 nuevas, 105 km de colectores y 7 estaciones automáticas de monitoreo de caudal.',
+        proyectos:[
+          { titulo:'Reingeniería de 7 PTARs', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'rio_atoyac', label:'Río Atoyac', color:'#1a4971', sym:'line'}] },
+          { titulo:'5 nuevas PTARs', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'105 km de colectores', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'7 estaciones automáticas de cantidad de agua', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      },
+      { meta:'Controlar la contaminación industrial',
+        color:'#2f6090',
+        desc:'Inspección a 50 industrias por año, capacitación a 100 con Profepa y 1 centro regional de capacitación ambiental empresarial.',
+        proyectos:[
+          { titulo:'Inspección a 50 industrias por año', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'Capacitación a 100 industrias con Profepa', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'1 centro regional de capacitación', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      }
+    ]
+  },
+  inund:{
+    label:'Espacios ribereños', tabClass:'ti', color:'#1a6b7a', accent:'#1a8a9b',
+    desc:'Habilitación de espacios públicos con agua limpia junto al río Atoyac: humedal, espacio deportivo y parque ribereño.',
+    metas:[
+      { meta:'Generar espacios públicos con agua limpia',
+        color:'#1a8a9b',
+        desc:'Diseño y construcción de humedal, espacio deportivo y parque ribereño en la cuenca del Atoyac con 800 mdp de inversión.',
+        proyectos:[
+          { titulo:'PTAR La Herradura con parque ribereño', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuerpos_agua_atoyac', label:'Cuerpos de agua', color:'#1a6b7a', sym:'sq'}] },
+          { titulo:'Humedal y espacio deportivo', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      }
+    ]
+  },
+  eco:{
+    label:'Restauración ecológica', tabClass:'te', color:'#2d6b3a', accent:'#2d8a4a',
+    desc:'Revegetación de 15 km de riberas, saneamiento de 400 árboles, delimitación de zona federal y conservación de más de 15,000 ha de bosque.',
+    metas:[
+      { meta:'Reforestar y proteger las riberas del río Atoyac',
+        color:'#3a8a4a',
+        desc:'Saneamiento fitosanitario de 400 árboles ribereños, revegetación de 15 km de márgenes y 63 km de delimitación de zona federal.',
+        proyectos:[
+          { titulo:'Saneamiento de 400 árboles ribereños', estatus:'En ejecución', anio:'2025',
+            layerDefs:[{key:'rio_atoyac', label:'Río Atoyac', color:'#2d6b3a', sym:'line'}] },
+          { titulo:'Revegetación de 15 km de riberas', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
+          { titulo:'63 km de delimitación de zona federal', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      },
+      { meta:'Conservar los bosques de la cuenca',
+        color:'#2d7a4f',
+        desc:'15,278 ha en pago por servicios ambientales y restauración forestal de 1,154 ha con apoyo de Conafor.',
+        proyectos:[
+          { titulo:'15,278 ha en pago por servicios ambientales', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuenca_atoyac', label:'Cuenca del Atoyac', color:'#2d6b3a', sym:'sq'}] },
+          { titulo:'Restauración forestal de 1,154 ha con Conafor', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
+        ]
+      }
+    ]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/map.js"></script>
+</body>
+</html>

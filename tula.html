@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Río Tula — Plan de Saneamiento 2025–2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body.rio-tula {
+      --agua: #1a5c8a; --agua-lt: #e4edf5;
+      --inund: #611232; --inund-lt: #f3e4ea;
+      --eco: #2d6b3a; --eco-lt: #e4f0e8;
+      --vino: #611232; --vino-dk: #3d0b1f; --vino-lt: #f3e4ea;
+    }
+    body.rio-tula #app-header { background: #3d0b1f; }
+    .back-to-rv {
+      font-size: 11px; color: rgba(255,255,255,.55);
+      text-decoration: none; letter-spacing: .04em;
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-bottom: 4px;
+    }
+    .back-to-rv:hover { color: rgba(255,255,255,.9); }
+  </style>
+</head>
+<body class="rio-tula">
+<div id="app">
+  <div id="app-header">
+    <div>
+      <a href="index.html" class="back-to-rv">‹ Ríos Vivos</a>
+      <div id="panel-title" onclick="UI.goHome()" style="cursor:pointer">Río Tula</div>
+    </div>
+    <div id="panel-sub">Plan de acción 2025–2026 · Hidalgo · Estado de México</div>
+  </div>
+  <div id="app-body">
+    <aside id="panel">
+      <div id="eje-tabs">
+        <button class="etab" id="tab-agua"  onclick="UI.selEje('agua')">Calidad<br>del agua</button>
+        <button class="etab" id="tab-inund" onclick="UI.selEje('inund')">Inundaciones<br>y cauce</button>
+        <button class="etab" id="tab-eco"   onclick="UI.selEje('eco')">Restauración<br>ecológica</button>
+      </div>
+      <div id="full-line"></div>
+      <div id="plist"></div>
+    </aside>
+    <div id="map-wrap">
+      <div id="map"></div>
+      <div id="map-badge" class="hidden"><span id="map-badge-txt"></span></div>
+      <div id="dbo-legend" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ESTCLS = {'En ejecución':'b-ej','En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeación':'b-pl'};
+const RIO_DATA_DIR   = 'data/tula/';
+const RIO_CUENCA_KEY = null;
+const RIO_COLOR      = '#611232';
+const RIO_INIT_VIEW  = { lat: 20.05, lng: -99.35, zoom: 10 };
+
+const CONFIG = {
+  agua:{
+    label:'Calidad del agua', tabClass:'ta', color:'#1a5c8a', accent:'#1a7ab0',
+    desc:'Saneamiento de las descargas domésticas e industriales en los 30 km del tramo urbano del río Tula, con 97 sitios de monitoreo de calidad del agua.',
+    metas:[
+      { meta:'Sanear las descargas en el tramo urbano',
+        color:'#1a7ab0',
+        desc:'Rehabilitación de colectores, conexiones domiciliarias y monitoreo continuo de calidad del agua en 97 puntos de la cuenca.',
+        proyectos:[
+          { titulo:'Red de monitoreo de calidad del agua (97 sitios)', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'zona_federal', label:'Zona federal río Tula', color:'#1a5c8a', sym:'line'}] },
+          { titulo:'Rehabilitación de colectores y conexiones', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
+        ]
+      }
+    ]
+  },
+  inund:{
+    label:'Inundaciones y cauce', tabClass:'ti', color:'#611232', accent:'#9b2247',
+    desc:'Obras de control de inundaciones en el tramo urbano, encauzamiento de la presa Endho y protección de asentamientos humanos en zonas de riesgo.',
+    metas:[
+      { meta:'Reducir inundaciones en el tramo urbano',
+        color:'#9b2247',
+        desc:'Encauzamiento, limpieza de azolve y obras de protección en los 30 km del río Tula y sus afluentes Bojay y Alfajayucan.',
+        proyectos:[
+          { titulo:'Desazolve del tramo urbano del río Tula', estatus:'En ejecución', anio:'2025',
+            layerDefs:[{key:'azolve', label:'Sitios de azolve', color:'#611232', sym:'sq'}] },
+          { titulo:'Presa Endho — control operativo', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'endho', label:'Presa Endho', color:'#611232', sym:'sq'}] },
+          { titulo:'Limpieza Arroyo Bojay', estatus:'En ejecución', anio:'2025',
+            layerDefs:[{key:'bojay', label:'Arroyo Bojay', color:'#611232', sym:'line'}] }
+        ]
+      }
+    ]
+  },
+  eco:{
+    label:'Restauración ecológica', tabClass:'te', color:'#2d6b3a', accent:'#2d8a4a',
+    desc:'Restauración forestal, conservación de áreas naturales protegidas y recuperación de la biodiversidad en la cuenca del río Tula.',
+    metas:[
+      { meta:'Restaurar la cobertura forestal de la cuenca',
+        color:'#2d8a4a',
+        desc:'2,300 ha de restauración forestal, conservación en ANPs y reforestación de riberas en la cuenca del río Tula.',
+        proyectos:[
+          { titulo:'Restauración forestal 2,300 ha', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'restauracion_forestal', label:'Restauración forestal', color:'#2d6b3a', sym:'sq'}] },
+          { titulo:'Área Natural Protegida nueva', estatus:'Por iniciar', anio:'2026',
+            layerDefs:[{key:'nueva_anp', label:'Nueva ANP', color:'#2d6b3a', sym:'sq'}] },
+          { titulo:'Conservación forestal activa', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'conservacion_forestal', label:'Conservación forestal', color:'#2d6b3a', sym:'sq'}] }
+        ]
+      }
+    ]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/map.js"></script>
+</body>
+</html>

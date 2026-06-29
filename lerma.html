@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Río Lerma-Santiago — Plan de Saneamiento 2025–2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body.rio-lerma {
+      --agua: #1e6b3a; --agua-lt: #e4f0e8;
+      --inund: #1a5c8a; --inund-lt: #e4edf5;
+      --eco: #1a6b6b; --eco-lt: #e4f0f0;
+      --vino: #1e6b3a; --vino-dk: #124528; --vino-lt: #e4f0e8;
+    }
+    body.rio-lerma #app-header { background: #124528; }
+    .back-to-rv {
+      font-size: 11px; color: rgba(255,255,255,.55);
+      text-decoration: none; letter-spacing: .04em;
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-bottom: 4px;
+    }
+    .back-to-rv:hover { color: rgba(255,255,255,.9); }
+  </style>
+</head>
+<body class="rio-lerma">
+<div id="app">
+  <div id="app-header">
+    <div>
+      <a href="index.html" class="back-to-rv">‹ Ríos Vivos</a>
+      <div id="panel-title" onclick="UI.goHome()" style="cursor:pointer">Lerma-Santiago</div>
+    </div>
+    <div id="panel-sub">Plan de acción 2025–2026 · Edo. de México · Jalisco</div>
+  </div>
+  <div id="app-body">
+    <aside id="panel">
+      <div id="eje-tabs">
+        <button class="etab" id="tab-agua"  onclick="UI.selEje('agua')">Calidad<br>del agua</button>
+        <button class="etab" id="tab-inund" onclick="UI.selEje('inund')">Infraestructura<br>hídrica</button>
+        <button class="etab" id="tab-eco"   onclick="UI.selEje('eco')">Restauración<br>ecológica</button>
+      </div>
+      <div id="full-line"></div>
+      <div id="plist"></div>
+    </aside>
+    <div id="map-wrap">
+      <div id="map"></div>
+      <div id="map-badge" class="hidden"><span id="map-badge-txt"></span></div>
+      <div id="dbo-legend" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ESTCLS = {'En ejecución':'b-ej','En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeación':'b-pl'};
+const RIO_DATA_DIR   = 'data/lerma/';
+const RIO_CUENCA_KEY = 'cuenca_lerma_santiago';
+const RIO_COLOR      = '#1e6b3a';
+const RIO_INIT_VIEW  = { lat: 20.8, lng: -102.0, zoom: 7 };
+
+const CONFIG = {
+  agua:{
+    label:'Calidad del agua', tabClass:'ta', color:'#1e6b3a', accent:'#2a8a50',
+    desc:'Mejora de la calidad del agua del sistema Lerma-Santiago mediante saneamiento de las descargas domésticas e industriales, cierre de tiraderos clandestinos y recuperación de las ciénegas de Lerma.',
+    metas:[
+      { meta:'Sanear las descargas domésticas e industriales',
+        color:'#2a8a50',
+        desc:'Rehabilitación y ampliación de PTARs en la cuenca alta del Lerma y en el tramo Jalisco-Santiago con capacidad total de 6,500 L/s.',
+        proyectos:[
+          { titulo:'Rehabilitación de PTARs Lerma cuenca alta', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'rio_lerma_santiago', label:'Río Lerma-Santiago', color:'#1e6b3a', sym:'line'}] },
+          { titulo:'PTARs Santiago cuenca Jalisco', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'Inspección a 80 industrias por año con Profepa', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
+        ]
+      },
+      { meta:'Recuperar las ciénegas de Lerma',
+        color:'#1e7a45',
+        desc:'Saneamiento y restauración de las ciénegas de Lerma como sitio RAMSAR, con control de descargas en el origen del río.',
+        proyectos:[
+          { titulo:'Saneamiento de las ciénegas de Lerma (RAMSAR)', estatus:'Por iniciar', anio:'2026',
+            layerDefs:[{key:'cuerpos_agua_lerma', label:'Cuerpos de agua', color:'#1e6b3a', sym:'sq'}] },
+          { titulo:'Control de descargas origen del Lerma', estatus:'En ejecución', anio:'2025', layerDefs:[] }
+        ]
+      }
+    ]
+  },
+  inund:{
+    label:'Infraestructura hídrica', tabClass:'ti', color:'#1a5c8a', accent:'#1a7ab0',
+    desc:'Obra hidráulica para control de inundaciones, rehabilitación del cauce del Lerma y recuperación del humedal El Ahogado en Jalisco.',
+    metas:[
+      { meta:'Reducir inundaciones en la cuenca baja',
+        color:'#1a7ab0',
+        desc:'Construcción de 12 km de borde de protección en el río Santiago, dragado de 40 km de cauce y 3 plantas de bombeo.',
+        proyectos:[
+          { titulo:'12 km de borde de protección río Santiago', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'rio_lerma_santiago', label:'Río Lerma-Santiago', color:'#1a5c8a', sym:'line'}] },
+          { titulo:'Dragado de 40 km de cauce', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'3 plantas de bombeo', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      },
+      { meta:'Recuperar el humedal El Ahogado',
+        color:'#1a6b9a',
+        desc:'Restauración del humedal El Ahogado en Tlaquepaque, Jalisco, con PTAR de 1,000 L/s y parque ribereño.',
+        proyectos:[
+          { titulo:'PTAR Humedal El Ahogado 1,000 L/s', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuerpos_agua_lerma', label:'Cuerpos de agua', color:'#1a5c8a', sym:'sq'}] },
+          { titulo:'Parque ribereño El Ahogado', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      }
+    ]
+  },
+  eco:{
+    label:'Restauración ecológica', tabClass:'te', color:'#1a6b6b', accent:'#1a8a8a',
+    desc:'Reforestación de la cuenca alta del Lerma, pago por servicios ambientales y conservación de áreas naturales protegidas en el sistema.',
+    metas:[
+      { meta:'Reforestar la cuenca alta del Lerma',
+        color:'#1a8080',
+        desc:'25,000 ha de reforestación en la cuenca alta del Lerma en colaboración con Conafor y comunidades ejidales.',
+        proyectos:[
+          { titulo:'25,000 ha de reforestación cuenca alta', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuenca_lerma_santiago', label:'Cuenca Lerma-Santiago', color:'#1a6b6b', sym:'sq'}] },
+          { titulo:'Pago por servicios ambientales 18,000 ha', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
+        ]
+      },
+      { meta:'Conservar y restaurar ecosistemas riparios',
+        color:'#1a7070',
+        desc:'Delimitación de 80 km de zona federal, revegetación de riberas y monitoreo de biodiversidad en el río Lerma.',
+        proyectos:[
+          { titulo:'Delimitación de 80 km de zona federal', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
+          { titulo:'Revegetación de riberas del Lerma', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
+          { titulo:'Monitoreo de biodiversidad acuática', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'rio_lerma_santiago', label:'Río Lerma-Santiago', color:'#1a6b6b', sym:'line'}] }
+        ]
+      }
+    ]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/map.js"></script>
+</body>
+</html>
