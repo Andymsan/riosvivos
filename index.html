@@ -11,116 +11,137 @@
       --atoyac: #1a4971;
       --lerma:  #1e6b3a;
       --tula:   #611232;
-      --ink:    #1a1a1a;
-      --off:    #f5f3f0;
+      --ink:    #1c2b3a;
+      --muted:  #5a6a7a;
+      --off:    #f4f6f8;
+      --border: #dde3ea;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Noto Sans', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+    body { font-family: 'Noto Sans', sans-serif; background: #fff; color: var(--ink); overflow-x: hidden; }
 
     /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 32px;
-      transition: background .4s, padding .3s;
+      padding: 16px 40px; background: rgba(255,255,255,.95);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(8px);
+      transition: border-color .3s, padding .3s;
     }
-    nav.scrolled { background: rgba(8,8,8,.92); backdrop-filter: blur(8px); padding: 12px 32px; }
+    nav.scrolled { border-bottom-color: var(--border); padding: 12px 40px; }
     .nav-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 18px; font-weight: 900; color: #fff;
+      font-size: 17px; font-weight: 900; color: var(--ink);
       text-decoration: none; letter-spacing: -.01em;
     }
-    .nav-logo em { font-style: italic; color: rgba(255,255,255,.6); font-weight: 700; }
+    .nav-logo em { font-style: italic; color: var(--muted); font-weight: 700; }
     .nav-tag {
-      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-      color: rgba(255,255,255,.45); font-weight: 400;
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 400;
     }
 
-    /* HERO */
+    /* HERO — imagen del mapa */
     .hero {
-      position: relative; height: 100vh; min-height: 580px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      overflow: hidden;
+      padding-top: 64px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 92vh; align-items: center;
+      background: var(--off);
     }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: url('img/tres_rios.jpg') center/cover no-repeat;
-      filter: brightness(.22) saturate(.6);
-      transform: scale(1.03);
-      animation: hzoom 12s ease forwards;
+    .hero-left {
+      padding: 60px 56px 60px 56px;
+      display: flex; flex-direction: column; justify-content: center;
     }
-    @keyframes hzoom { from { transform:scale(1.03); } to { transform:scale(1); } }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,.3) 0%, rgba(0,0,0,.7) 100%);
-    }
-    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; }
     .hero-tag {
-      font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-      color: rgba(255,255,255,.5); margin-bottom: 20px;
-      opacity: 0; animation: fadeUp .7s .3s forwards;
+      font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 18px;
+      opacity: 0; animation: fadeUp .6s .2s forwards;
     }
     .hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(56px, 10vw, 120px); font-weight: 900; line-height: .95;
-      letter-spacing: -.02em; color: #fff;
-      opacity: 0; animation: fadeUp .9s .5s forwards;
+      font-size: clamp(42px, 5vw, 72px); font-weight: 900; line-height: .95;
+      letter-spacing: -.02em; color: var(--ink);
+      opacity: 0; animation: fadeUp .8s .35s forwards;
     }
-    .hero-title em { font-style: italic; color: rgba(255,255,255,.65); }
+    .hero-title em { font-style: italic; color: var(--muted); }
     .hero-sub {
-      margin-top: 28px; max-width: 540px; margin-left: auto; margin-right: auto;
-      font-size: clamp(15px, 1.8vw, 18px); color: rgba(255,255,255,.62);
-      font-weight: 300; line-height: 1.65;
-      opacity: 0; animation: fadeUp .8s .75s forwards;
+      margin-top: 24px; max-width: 440px;
+      font-size: 16px; color: var(--muted); font-weight: 300; line-height: 1.7;
+      opacity: 0; animation: fadeUp .7s .55s forwards;
     }
-    .hero-scroll {
-      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
-      opacity: 0; animation: fadeUp .6s 1.2s forwards;
+    .hero-badges {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px;
+      opacity: 0; animation: fadeUp .6s .7s forwards;
     }
-    .hero-scroll span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.35); }
-    .scroll-arr { width: 18px; height: 18px; border-right: 1.5px solid rgba(255,255,255,.3); border-bottom: 1.5px solid rgba(255,255,255,.3); transform: rotate(45deg); animation: bounce 1.6s infinite; }
-    @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .hbadge {
+      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px;
+      letter-spacing: .03em;
+    }
+    .hb-at { background: #e4edf5; color: var(--atoyac); }
+    .hb-le { background: #e4f0e8; color: var(--lerma); }
+    .hb-tu { background: #f3e4ea; color: var(--tula); }
+    .hero-right {
+      position: relative; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-map-img {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; animation: fadeUp .9s .3s forwards;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
-    /* INTRO STRIP */
+    /* STATS STRIP */
+    .stats-strip {
+      display: flex; justify-content: center;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+    .stat-item {
+      flex: 1; max-width: 200px; text-align: center;
+      padding: 28px 16px; border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-v { font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1; }
+    .stat-l { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 400; }
+
+    /* INTRO */
     .intro-strip {
-      background: #111; border-top: 1px solid rgba(255,255,255,.06);
-      padding: 48px 32px; text-align: center;
+      background: #fff; padding: 52px 40px; text-align: center;
+      border-bottom: 1px solid var(--border);
     }
     .intro-strip p {
-      max-width: 700px; margin: 0 auto;
-      font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.55); font-weight: 300;
+      max-width: 680px; margin: 0 auto;
+      font-size: 16px; line-height: 1.8; color: var(--muted); font-weight: 300;
     }
-    .intro-strip strong { color: rgba(255,255,255,.85); font-weight: 600; }
+    .intro-strip strong { color: var(--ink); font-weight: 600; }
 
     /* RÍOS SECTION */
-    .s-rios { padding: 80px 32px 100px; }
+    .s-rios { padding: 72px 40px 96px; background: var(--off); }
     .s-rios-header {
-      text-align: center; margin-bottom: 56px;
-      opacity: 0; transform: translateY(18px);
-      transition: opacity .7s, transform .7s;
+      text-align: center; margin-bottom: 48px;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity .6s, transform .6s;
     }
     .s-rios-header.visible { opacity: 1; transform: none; }
-    .s-tag { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); display: block; margin-bottom: 12px; }
-    .s-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3vw, 38px); font-weight: 700; color: #fff; }
+    .s-tag { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 10px; }
+    .s-title { font-family: 'Playfair Display', serif; font-size: clamp(24px, 2.8vw, 34px); font-weight: 700; color: var(--ink); }
 
     .rios-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 24px; max-width: 1100px; margin: 0 auto;
+      gap: 20px; max-width: 1080px; margin: 0 auto;
     }
 
     /* RÍO CARD */
     .rio-card {
-      position: relative; border-radius: 14px; overflow: hidden;
-      background: #141414; border: 1px solid rgba(255,255,255,.07);
+      position: relative; border-radius: 12px; overflow: hidden;
+      background: #fff; border: 1px solid var(--border);
       display: flex; flex-direction: column;
-      opacity: 0; transform: translateY(24px);
-      transition: opacity .7s, transform .7s, box-shadow .25s, border-color .25s;
-      text-decoration: none; color: #fff;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .6s, transform .6s, box-shadow .2s, border-color .2s;
+      text-decoration: none; color: var(--ink);
     }
     .rio-card.visible { opacity: 1; transform: none; }
-    .rio-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.5); border-color: rgba(255,255,255,.15); }
+    .rio-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.1); border-color: #c0cdd8; }
     .rio-card:hover .rc-stripe { height: 6px; }
 
     .rc-stripe { height: 4px; transition: height .2s; flex-shrink: 0; }
@@ -128,44 +149,61 @@
     .rc-lerma  { background: linear-gradient(90deg, var(--lerma),  #2aa85a); }
     .rc-tula   { background: linear-gradient(90deg, var(--tula),   #9b2247); }
 
-    .rc-body { padding: 32px 28px 28px; flex: 1; display: flex; flex-direction: column; }
-    .rc-num  { font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 10px; }
+    .rc-body { padding: 28px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+    .rc-num  { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
     .rc-name {
       font-family: 'Playfair Display', serif;
-      font-size: 28px; font-weight: 900; line-height: 1.1; margin-bottom: 6px;
+      font-size: 26px; font-weight: 900; line-height: 1.1; margin-bottom: 4px;
     }
-    .rc-name.cn-atoyac { color: #5aa0d8; }
-    .rc-name.cn-lerma  { color: #5ac87a; }
-    .rc-name.cn-tula   { color: #d87a9a; }
-    .rc-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-bottom: 20px; }
-    .rc-desc { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,.58); flex: 1; margin-bottom: 24px; }
-    .rc-stats { display: flex; gap: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.06); }
-    .rc-stat-v { font-size: 22px; font-weight: 700; line-height: 1; }
-    .rc-stat-v.sv-atoyac { color: #5aa0d8; }
-    .rc-stat-v.sv-lerma  { color: #5ac87a; }
-    .rc-stat-v.sv-tula   { color: #d87a9a; }
-    .rc-stat-l { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 3px; }
+    .rc-name.cn-atoyac { color: var(--atoyac); }
+    .rc-name.cn-lerma  { color: var(--lerma); }
+    .rc-name.cn-tula   { color: var(--tula); }
+    .rc-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .rc-desc { font-size: 13px; line-height: 1.65; color: #4a5a6a; flex: 1; margin-bottom: 20px; }
+    .rc-stats { display: flex; gap: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .rc-stat-v { font-size: 20px; font-weight: 700; line-height: 1; }
+    .rc-stat-v.sv-atoyac { color: var(--atoyac); }
+    .rc-stat-v.sv-lerma  { color: var(--lerma); }
+    .rc-stat-v.sv-tula   { color: var(--tula); }
+    .rc-stat-l { font-size: 11px; color: var(--muted); margin-top: 3px; }
     .rc-cta {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5);
-      margin-top: 20px; transition: color .2s;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      margin-top: 18px; transition: color .2s;
     }
-    .rio-card:hover .rc-cta { color: rgba(255,255,255,.9); }
+    .rc-cta.ct-at { color: #8ab0d0; }
+    .rc-cta.ct-le { color: #6aaa80; }
+    .rc-cta.ct-tu { color: #c07090; }
+    .rio-card:hover .rc-cta { opacity: 1; }
+    .rio-card:hover .ct-at { color: var(--atoyac); }
+    .rio-card:hover .ct-le { color: var(--lerma); }
+    .rio-card:hover .ct-tu { color: var(--tula); }
 
     /* FOOTER */
     footer {
-      background: #050505; border-top: 1px solid rgba(255,255,255,.05);
-      text-align: center; padding: 28px;
-      font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: .04em;
+      background: var(--off); border-top: 1px solid var(--border);
+      text-align: center; padding: 28px 40px;
+      font-size: 12px; color: var(--muted); letter-spacing: .03em;
+      display: flex; align-items: center; justify-content: center; gap: 32px;
     }
-    footer a { color: rgba(255,255,255,.35); text-decoration: none; }
+    .footer-logos { display: flex; align-items: center; gap: 20px; }
+    .footer-logos span {
+      font-size: 10px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: #8a9aaa;
+    }
 
     /* MOBILE */
-    @media (max-width: 768px) {
-      nav { padding: 14px 18px; }
+    @media (max-width: 860px) {
+      nav { padding: 14px 20px; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 48px 24px 32px; }
+      .hero-right { height: 280px; }
       .rios-grid { grid-template-columns: 1fr; }
-      .s-rios { padding: 60px 20px 80px; }
+      .s-rios { padding: 52px 20px 72px; }
       .intro-strip { padding: 36px 20px; }
+      .stats-strip { flex-wrap: wrap; }
+      .stat-item { min-width: 50%; border-right: none; border-bottom: 1px solid var(--border); }
+      footer { flex-direction: column; gap: 12px; }
     }
   </style>
 </head>
@@ -178,18 +216,29 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
+  <div class="hero-left">
     <p class="hero-tag">Promesa 92 de la presidenta · Plan de acción 2025–2026</p>
     <h1 class="hero-title">Ríos <em>Vivos</em></h1>
-    <p class="hero-sub">Tres ríos estratégicos de México en proceso de saneamiento, restauración ecológica y recuperación hídrica para las comunidades que dependen de ellos.</p>
+    <p class="hero-sub">Tres cuencas estratégicas en proceso de saneamiento, restauración y recuperación hídrica para las comunidades que dependen de ellas.</p>
+    <div class="hero-badges">
+      <span class="hbadge hb-at">Atoyac — 162 km · 3.7 M hab.</span>
+      <span class="hbadge hb-le">Lerma-Santiago — 1,260 km · 23.5 M hab.</span>
+      <span class="hbadge hb-tu">Tula — 191 km · 0.8 M hab.</span>
+    </div>
   </div>
-  <div class="hero-scroll">
-    <span>Explorar</span>
-    <div class="scroll-arr"></div>
+  <div class="hero-right">
+    <img class="hero-map-img" src="img/tres_rios.jpg" alt="Mapa de las tres cuencas: Atoyac, Lerma-Santiago y Tula" />
   </div>
 </section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="stat-v">91</div><div class="stat-l">proyectos en total</div></div>
+  <div class="stat-item"><div class="stat-v">3</div><div class="stat-l">cuencas prioritarias</div></div>
+  <div class="stat-item"><div class="stat-v">73</div><div class="stat-l">municipios beneficiados</div></div>
+  <div class="stat-item"><div class="stat-v">2,016 mdp</div><div class="stat-l">inversión 2025</div></div>
+  <div class="stat-item"><div class="stat-v">4,590 mdp</div><div class="stat-l">inversión 2026</div></div>
+</div>
 
 <!-- INTRO -->
 <div class="intro-strip">
@@ -218,7 +267,7 @@
           <div><div class="rc-stat-v sv-atoyac">18</div><div class="rc-stat-l">municipios</div></div>
           <div><div class="rc-stat-v sv-atoyac">5</div><div class="rc-stat-l">metas</div></div>
         </div>
-        <span class="rc-cta">Explorar el plan ›</span>
+        <span class="rc-cta ct-at">Explorar el plan ›</span>
       </div>
     </a>
 
@@ -235,12 +284,12 @@
           <div><div class="rc-stat-v sv-lerma">37</div><div class="rc-stat-l">municipios</div></div>
           <div><div class="rc-stat-v sv-lerma">6</div><div class="rc-stat-l">metas</div></div>
         </div>
-        <span class="rc-cta">Explorar el plan ›</span>
+        <span class="rc-cta ct-le">Explorar el plan ›</span>
       </div>
     </a>
 
     <!-- TULA -->
-    <a class="rio-card reveal" href="tula.html" style="transition-delay:.25s">
+    <a class="rio-card reveal" href="https://andymsan.github.io/rio-tula/" target="_blank" style="transition-delay:.25s">
       <div class="rc-stripe rc-tula"></div>
       <div class="rc-body">
         <div class="rc-num">03 · Cuenca del Río Tula</div>
@@ -252,7 +301,7 @@
           <div><div class="rc-stat-v sv-tula">11</div><div class="rc-stat-l">metas</div></div>
           <div><div class="rc-stat-v sv-tula">3</div><div class="rc-stat-l">ejes</div></div>
         </div>
-        <span class="rc-cta">Explorar el plan ›</span>
+        <span class="rc-cta ct-tu">Explorar el plan ›</span>
       </div>
     </a>
 
@@ -260,7 +309,10 @@
 </section>
 
 <footer>
-  Secretaría de Medio Ambiente y Recursos Naturales · Ríos Vivos — Promesa 92 · 2025–2026
+  <span>Secretaría de Medio Ambiente y Recursos Naturales · Ríos Vivos — Promesa 92 · 2025–2026</span>
+  <div class="footer-logos">
+    <span>SEMARNAT</span><span>CONAGUA</span><span>PROFEPA</span><span>CONANP</span><span>CONAFOR</span>
+  </div>
 </footer>
 
 <script>
