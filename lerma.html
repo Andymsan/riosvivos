@@ -61,75 +61,80 @@ const RIO_INIT_VIEW  = { lat: 20.8, lng: -102.0, zoom: 7 };
 const CONFIG = {
   agua:{
     label:'Calidad del agua', tabClass:'ta', color:'#1e6b3a', accent:'#2a8a50',
-    desc:'Mejora de la calidad del agua del sistema Lerma-Santiago mediante saneamiento de las descargas domésticas e industriales, cierre de tiraderos clandestinos y recuperación de las ciénegas de Lerma.',
+    desc:'Mejora de la calidad del río Lerma-Santiago con 6 nuevas PTARs, rehabilitación de 11 existentes y control de la contaminación industrial. Inversión 2025–2026: 408 + 1,590 mdp.',
     metas:[
-      { meta:'Sanear las descargas domésticas e industriales',
+      { meta:'Mejorar la calidad del río',
         color:'#2a8a50',
-        desc:'Rehabilitación y ampliación de PTARs en la cuenca alta del Lerma y en el tramo Jalisco-Santiago con capacidad total de 6,500 L/s.',
+        desc:'6 nuevas PTARs y rehabilitación-ampliación de 11 PTARs existentes, reconversión energética de 7 PTARs, 19 km de colectores en 8 tramos, limpieza y desazolve de 3.1 km y 4 trampas de basura.',
         proyectos:[
-          { titulo:'Rehabilitación de PTARs Lerma cuenca alta', estatus:'En ejecución', anio:'2025-2026',
+          { titulo:'6 nuevas PTARs (Trompadera, San Pedro Cholula, SM Atenco Tres Cruces, Lagunas Mexicaltzingo, Santa Teresa, Tlaltizapán Acalotli)', estatus:'En ejecución', anio:'2025-2026',
             layerDefs:[{key:'rio_lerma_santiago', label:'Río Lerma-Santiago', color:'#1e6b3a', sym:'line'}] },
-          { titulo:'PTARs Santiago cuenca Jalisco', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
-          { titulo:'Inspección a 80 industrias por año con Profepa', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
+          { titulo:'Rehabilitación y ampliación de 11 PTARs (Chapultepec Tres Cruces, Humedal Metrópec, y otras)', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuenca_lerma_santiago', label:'Cuenca Lerma-Santiago', color:'#1e6b3a', sym:'sq'}] },
+          { titulo:'Reconversión energética de 7 PTARs', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'19 km de colectores en 8 tramos', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'Limpieza y desazolve de 3.1 km', estatus:'En ejecución', anio:'2025', layerDefs:[] },
+          { titulo:'4 trampas de basura', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
         ]
       },
-      { meta:'Recuperar las ciénegas de Lerma',
+      { meta:'Controlar la contaminación industrial',
         color:'#1e7a45',
-        desc:'Saneamiento y restauración de las ciénegas de Lerma como sitio RAMSAR, con control de descargas en el origen del río.',
+        desc:'90 industrias inspeccionadas por año, 496 empresas capacitadas, 63 certificadas y 2 centros regionales de capacitación ambiental.',
         proyectos:[
-          { titulo:'Saneamiento de las ciénegas de Lerma (RAMSAR)', estatus:'Por iniciar', anio:'2026',
-            layerDefs:[{key:'cuerpos_agua_lerma', label:'Cuerpos de agua', color:'#1e6b3a', sym:'sq'}] },
-          { titulo:'Control de descargas origen del Lerma', estatus:'En ejecución', anio:'2025', layerDefs:[] }
+          { titulo:'90 industrias inspeccionadas por año', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'496 empresas capacitadas y 63 certificadas', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'2 centros regionales de capacitación ambiental', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
         ]
       }
     ]
   },
   inund:{
     label:'Infraestructura hídrica', tabClass:'ti', color:'#1a5c8a', accent:'#1a7ab0',
-    desc:'Obra hidráulica para control de inundaciones, rehabilitación del cauce del Lerma y recuperación del humedal El Ahogado en Jalisco.',
+    desc:'Obras de control de inundaciones en la cuenca del Lerma 1 (nacimiento del río): recuperación de cauce, bordos y delimitación de zona federal.',
     metas:[
-      { meta:'Reducir inundaciones en la cuenca baja',
+      { meta:'Evitar inundaciones',
         color:'#1a7ab0',
-        desc:'Construcción de 12 km de borde de protección en el río Santiago, dragado de 40 km de cauce y 3 plantas de bombeo.',
+        desc:'Recuperación de cauce y bordos en 20.4 km del nacimiento del río Lerma en el Estado de México, delimitación de 169 km de zona federal y ordenamiento territorial de la cuenca.',
         proyectos:[
-          { titulo:'12 km de borde de protección río Santiago', estatus:'En ejecución', anio:'2025-2026',
+          { titulo:'Recuperación de cauce y bordos — 20.4 km (nacimiento del Lerma, EdoMex)', estatus:'En ejecución', anio:'2025-2026',
             layerDefs:[{key:'rio_lerma_santiago', label:'Río Lerma-Santiago', color:'#1a5c8a', sym:'line'}] },
-          { titulo:'Dragado de 40 km de cauce', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
-          { titulo:'3 plantas de bombeo', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
-        ]
-      },
-      { meta:'Recuperar el humedal El Ahogado',
-        color:'#1a6b9a',
-        desc:'Restauración del humedal El Ahogado en Tlaquepaque, Jalisco, con PTAR de 1,000 L/s y parque ribereño.',
-        proyectos:[
-          { titulo:'PTAR Humedal El Ahogado 1,000 L/s', estatus:'En ejecución', anio:'2025-2026',
-            layerDefs:[{key:'cuerpos_agua_lerma', label:'Cuerpos de agua', color:'#1a5c8a', sym:'sq'}] },
-          { titulo:'Parque ribereño El Ahogado', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+          { titulo:'Delimitación de zona federal — 169 km', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
+          { titulo:'Ordenamiento territorial de la cuenca', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
         ]
       }
     ]
   },
   eco:{
     label:'Restauración ecológica', tabClass:'te', color:'#1a6b6b', accent:'#1a8a8a',
-    desc:'Reforestación de la cuenca alta del Lerma, pago por servicios ambientales y conservación de áreas naturales protegidas en el sistema.',
+    desc:'Restauración forestal de la cuenca alta, recuperación de las ciénegas de Lerma (3,024 ha RAMSAR) y del humedal El Ahogado en Jalisco (847 ha).',
     metas:[
-      { meta:'Reforestar la cuenca alta del Lerma',
+      { meta:'Restauración forestal de la cuenca alta',
         color:'#1a8080',
-        desc:'25,000 ha de reforestación en la cuenca alta del Lerma en colaboración con Conafor y comunidades ejidales.',
+        desc:'Restauración forestal a razón de 2,140 ha/año en la cuenca alta del Lerma con apoyo de Conafor y comunidades ejidales.',
         proyectos:[
-          { titulo:'25,000 ha de reforestación cuenca alta', estatus:'En ejecución', anio:'2025-2026',
-            layerDefs:[{key:'cuenca_lerma_santiago', label:'Cuenca Lerma-Santiago', color:'#1a6b6b', sym:'sq'}] },
-          { titulo:'Pago por servicios ambientales 18,000 ha', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] }
+          { titulo:'Restauración forestal 2,140 ha/año', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuenca_lerma_santiago', label:'Cuenca Lerma-Santiago', color:'#1a6b6b', sym:'sq'}] }
         ]
       },
-      { meta:'Conservar y restaurar ecosistemas riparios',
+      { meta:'Restaurar las ciénegas de Lerma (3,024 ha)',
         color:'#1a7070',
-        desc:'Delimitación de 80 km de zona federal, revegetación de riberas y monitoreo de biodiversidad en el río Lerma.',
+        desc:'Desazolve, limpieza, 8 sistemas de tratamiento (0.8 m³/s), 50 km de colectores y ampliación del Área Natural Protegida en las ciénegas de Lerma.',
         proyectos:[
-          { titulo:'Delimitación de 80 km de zona federal', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
-          { titulo:'Revegetación de riberas del Lerma', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
-          { titulo:'Monitoreo de biodiversidad acuática', estatus:'En ejecución', anio:'2025-2026',
-            layerDefs:[{key:'rio_lerma_santiago', label:'Río Lerma-Santiago', color:'#1a6b6b', sym:'line'}] }
+          { titulo:'Desazolve y limpieza de las ciénegas', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuerpos_agua_lerma', label:'Cuerpos de agua', color:'#1a6b6b', sym:'sq'}] },
+          { titulo:'8 sistemas de tratamiento (0.8 m³/s)', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'50 km de colectores en la cuenca Lerma 1', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'Ampliación del Área Natural Protegida ciénegas', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+        ]
+      },
+      { meta:'Recuperar el humedal El Ahogado, Jalisco (847 ha)',
+        color:'#1a6565',
+        desc:'Acciones legales para la protección del humedal, Plan Maestro, control de descargas y saneamiento de El Ahogado en Tlaquepaque, Jalisco.',
+        proyectos:[
+          { titulo:'Acciones legales para la protección del humedal', estatus:'En ejecución', anio:'2025', layerDefs:[] },
+          { titulo:'Plan Maestro del humedal El Ahogado', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'rio_lerma_santiago', label:'Río Santiago', color:'#1a6565', sym:'line'}] },
+          { titulo:'Control de descargas y saneamiento El Ahogado', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
         ]
       }
     ]

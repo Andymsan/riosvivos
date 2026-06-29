@@ -61,48 +61,50 @@ const RIO_INIT_VIEW  = { lat: 19.35, lng: -98.2, zoom: 9 };
 const CONFIG = {
   agua:{
     label:'Calidad del agua', tabClass:'ta', color:'#1a4971', accent:'#1a6fa8',
-    desc:'Saneamiento de las descargas domésticas e industriales de la cuenca alta del Atoyac en Puebla y Tlaxcala, con 7 PTARs rehabilitadas, 5 nuevas y 105 km de colectores.',
+    desc:'Saneamiento de las descargas domésticas e industriales de la cuenca alta del Atoyac en Puebla y Tlaxcala. Inversión 2025–2026: 516 + 1,500 mdp.',
     metas:[
       { meta:'Sanear las descargas de la cuenca alta de Puebla y Tlaxcala',
         color:'#3a7aad',
-        desc:'Reingeniería de 7 PTARs, construcción de 5 nuevas, 105 km de colectores y 7 estaciones automáticas de monitoreo de caudal.',
+        desc:'Reingeniería de 7 PTARs existentes, construcción de 5 nuevas PTARs, 105 km de colectores y 7 estaciones automáticas de monitoreo de caudal.',
         proyectos:[
-          { titulo:'Reingeniería de 7 PTARs', estatus:'En ejecución', anio:'2025-2026',
+          { titulo:'Reingeniería de 7 PTARs (San Antonio Huexotitla, San Antonio Chapultepec, San José Atlanga, Cuamantzico, Apizaco, Tlaxco, San Juan Cuauhtémoc)', estatus:'En ejecución', anio:'2025-2026',
             layerDefs:[{key:'rio_atoyac', label:'Río Atoyac', color:'#1a4971', sym:'line'}] },
-          { titulo:'5 nuevas PTARs', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'5 nuevas PTARs en la cuenca alta', estatus:'En ejecución', anio:'2025-2026',
+            layerDefs:[{key:'cuenca_atoyac', label:'Cuenca del Atoyac', color:'#1a4971', sym:'sq'}] },
           { titulo:'105 km de colectores', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
           { titulo:'7 estaciones automáticas de cantidad de agua', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
         ]
       },
       { meta:'Controlar la contaminación industrial',
         color:'#2f6090',
-        desc:'Inspección a 50 industrias por año, capacitación a 100 con Profepa y 1 centro regional de capacitación ambiental empresarial.',
+        desc:'Inspección a 50 industrias por año con Profepa, capacitación a 100 y 1 centro regional de capacitación ambiental empresarial.',
         proyectos:[
-          { titulo:'Inspección a 50 industrias por año', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
+          { titulo:'Inspección a 50 industrias / año con Profepa', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
           { titulo:'Capacitación a 100 industrias con Profepa', estatus:'En ejecución', anio:'2025-2026', layerDefs:[] },
-          { titulo:'1 centro regional de capacitación', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+          { titulo:'1 centro regional de capacitación ambiental', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
         ]
       }
     ]
   },
   inund:{
     label:'Espacios ribereños', tabClass:'ti', color:'#1a6b7a', accent:'#1a8a9b',
-    desc:'Habilitación de espacios públicos con agua limpia junto al río Atoyac: humedal, espacio deportivo y parque ribereño.',
+    desc:'Generación de espacios públicos con agua limpia junto al río Atoyac: parque ribereño, humedal y espacio deportivo. 800 mdp de inversión.',
     metas:[
       { meta:'Generar espacios públicos con agua limpia',
         color:'#1a8a9b',
-        desc:'Diseño y construcción de humedal, espacio deportivo y parque ribereño en la cuenca del Atoyac con 800 mdp de inversión.',
+        desc:'PTAR La Herradura con parque ribereño 2026, construcción de humedal y espacio deportivo en la ribera del Atoyac.',
         proyectos:[
-          { titulo:'PTAR La Herradura con parque ribereño', estatus:'En ejecución', anio:'2025-2026',
-            layerDefs:[{key:'cuerpos_agua_atoyac', label:'Cuerpos de agua', color:'#1a6b7a', sym:'sq'}] },
-          { titulo:'Humedal y espacio deportivo', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
+          { titulo:'PTAR La Herradura con parque ribereño', estatus:'En ejecución', anio:'2026',
+            layerDefs:[{key:'rio_atoyac', label:'Río Atoyac', color:'#1a6b7a', sym:'line'}] },
+          { titulo:'Humedal ribereño', estatus:'Por iniciar', anio:'2026', layerDefs:[] },
+          { titulo:'Espacio deportivo en la ribera', estatus:'Por iniciar', anio:'2026', layerDefs:[] }
         ]
       }
     ]
   },
   eco:{
     label:'Restauración ecológica', tabClass:'te', color:'#2d6b3a', accent:'#2d8a4a',
-    desc:'Revegetación de 15 km de riberas, saneamiento de 400 árboles, delimitación de zona federal y conservación de más de 15,000 ha de bosque.',
+    desc:'Saneamiento y revegetación de riberas, delimitación de zona federal y conservación de 15,278 ha de bosque con servicios ambientales.',
     metas:[
       { meta:'Reforestar y proteger las riberas del río Atoyac',
         color:'#3a8a4a',
@@ -116,7 +118,7 @@ const CONFIG = {
       },
       { meta:'Conservar los bosques de la cuenca',
         color:'#2d7a4f',
-        desc:'15,278 ha en pago por servicios ambientales y restauración forestal de 1,154 ha con apoyo de Conafor.',
+        desc:'15,278 ha en esquema de pago por servicios ambientales y restauración forestal de 1,154 ha con apoyo de Conafor.',
         proyectos:[
           { titulo:'15,278 ha en pago por servicios ambientales', estatus:'En ejecución', anio:'2025-2026',
             layerDefs:[{key:'cuenca_atoyac', label:'Cuenca del Atoyac', color:'#2d6b3a', sym:'sq'}] },
